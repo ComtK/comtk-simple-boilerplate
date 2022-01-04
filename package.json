@@ -32,7 +32,8 @@
 		"webpack-dev-server": "^4.7.2"
 	},
 	"dependencies": {
-		"fs-extra": "^10.0.0"
+		"fs-extra": "^10.0.0",
+		"react-router-dom": "^6.2.1"
 	},
 	"bin": {
 		"comtk-simple-boilerplate": "./bin/start.js"
