@@ -9,6 +9,12 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "",
+	"babel": {
+		"presets": [
+			"@babel/preset-env",
+			"@babel/preset-react"
+		]
+	},
 	"license": "ISC",
 	"packageManager": "yarn@3.1.1",
 	"devDependencies": {

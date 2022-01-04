@@ -25,8 +25,7 @@ console.log('Initializing project..');
 // create folder and initialize npm
 exec(`mkdir ${process.argv[2]} && cd ${process.argv[2]} && npm init -f`, (initErr, initStdout, initStderr) => {
 	if (initErr) {
-		console.error(`Everything was fine, then it wasn't:
-    ${initErr}`);
+		console.error(`Everything was fine, then it wasn't: ${initErr}`);
 		return;
 	}
 	const packageJSON = `${process.argv[2]}/package.json`;
