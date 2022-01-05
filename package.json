@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "webpack-dev-server --mode=development --open --hot",
-		"build": "webpack --mode=production",
+		"start": "yarn run create && webpack-dev-server --mode=development --open --hot",
+		"build": "yarn run create && webpack --mode=production",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"create": "node -e 'require(\"./CreateRouter\").create()'"
 	},
