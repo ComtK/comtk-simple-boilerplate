@@ -1,11 +1,34 @@
-const testFolder = './src/pages/';
-const fs = require('fs');
+const pagesDir = './src/pages/';
+const routesDir = './router/';
 
-module.exports.create = function () {
-	console.log('__dirname', __dirname);
-	fs.readdir(testFolder, (err, files) => {
-		files.forEach((file) => {
-			console.log(file);
-		});
+const fse = require('fs-extra');
+
+module.exports.create = async () => {
+	const result = explorer(pagesDir);
+};
+
+const explorer = async (dir) => {
+	const path = dir.replace(pagesDir, '/');
+	const data = {
+		importPath: [],
+		routePath: [],
+		element: [],
+	};
+	fse.readdir(dir, async (err, files) => {
+		for (const file of files) {
+			if (file.indexOf('.js') === -1) {
+				const subDir = await explorer(dir + `${file}/`);
+				data.importPath = [...data.importPath, ...subDir.importPath];
+				data.routePath = [...data.routePath, ...subDir.routePath];
+				data.element = [...data.element, ...subDir.element];
+			} else {
+				const element = file.replace('.js', '');
+				data.importPath = [...data.importPath, `.${dir.substring(0, dir.length - 1)}/${element}`];
+				data.routePath = [...data.routePath, `${path}${element}`];
+				data.element = [...data.element, element];
+			}
+		}
+		console.log(data);
 	});
+	return data;
 };
