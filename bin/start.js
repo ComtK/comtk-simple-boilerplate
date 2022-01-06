@@ -73,6 +73,7 @@ exec(`mkdir ${process.argv[2]} && cd ${process.argv[2]} && npm init -f`, (initEr
 
 		console.log('Copying additional files..');
 		// copy additional source files
+		fs.copy(path.join(__dirname, '../router'), `${process.argv[2]}/router`);
 		fs.copy(path.join(__dirname, '../src'), `${process.argv[2]}/src`)
 			.then(() => console.log(`All done!\n\nYour project is now ready\n\nUse the below command to run the app.\n\ncd ${process.argv[2]}\nnpm start`))
 			.catch((err) => console.error(err));
