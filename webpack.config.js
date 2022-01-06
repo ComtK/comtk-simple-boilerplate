@@ -12,6 +12,10 @@ module.exports = {
 			react: path.join(__dirname, 'node_modules', 'react'),
 		},
 	},
+	devServer: {
+		hot: true,
+		port: 3000,
+	},
 	module: {
 		rules: [
 			{
