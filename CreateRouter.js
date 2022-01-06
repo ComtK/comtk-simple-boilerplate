@@ -15,22 +15,20 @@ module.exports.create = async () => {
 
 	let routeList = '';
 	result.routePath.map((route, index) => {
-		routeList = routeList + `<Route path={'${route}'} element={< ${result.element[index]} />} />\n`;
+		routeList = routeList + `\t\t\t<Route path={'${route}'} element={< ${result.element[index]} />} />\n`;
 	});
 
-	const routes = `const CustomRouter = () => {\n
-		return (\n
-			<Routes>\n
-				${routeList}
-			</Routes>\n
-		);\n
-	};\n\n
+	const routes = `const CustomRouter = () => {
+	return (
+		<Routes>\n
+${routeList}
+		</Routes>
+	);
+};
 
-	export default CustomRouter;`;
+export default CustomRouter;`;
 
 	const router = reactDefault + `\n` + imp + `\n` + routes;
-
-	console.log(router);
 
 	const file = 'index.js';
 	fs.writeFile(routesDir + file, router, 'utf8', function (err) {
@@ -55,9 +53,15 @@ const explorer = async (dir) => {
 			data.element = [...data.element, ...subDir.element];
 		} else {
 			const element = file.replace('.js', '');
-			data.importPath = [...data.importPath, `'.${dir.substring(0, dir.length - 1)}/${element}'`];
-			data.routePath = [...data.routePath, `${path}${element}`];
-			data.element = [...data.element, element];
+			if (dir === pagesDir && element === 'Main') {
+				data.importPath = [...data.importPath, `'.${dir.substring(0, dir.length - 1)}/${element}'`];
+				data.routePath = [...data.routePath, `${path}`];
+				data.element = [...data.element, element];
+			} else {
+				data.importPath = [...data.importPath, `'.${dir.substring(0, dir.length - 1)}/${element}'`];
+				data.routePath = [...data.routePath, `${path}${element}`];
+				data.element = [...data.element, element];
+			}
 		}
 	}
 	return data;
