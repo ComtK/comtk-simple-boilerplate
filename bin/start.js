@@ -6,8 +6,10 @@ const { exec } = require('child_process');
 
 const packageJson = require('../package.json');
 
-const scripts = `"start": "webpack-dev-server --mode=development --open --hot",
-"build": "webpack --mode=production"`;
+const scripts = `
+"start": "yarn run create && webpack-dev-server --mode=development --open --hot",
+"build": "yarn run create && webpack --mode=production",
+"create": "node -e 'require(\\\"./CreateRouter\\\").create()'"`;
 
 const babel = `"babel": ${JSON.stringify(packageJson.babel)}`;
 
@@ -62,7 +64,8 @@ exec(`mkdir ${process.argv[2]} && cd ${process.argv[2]} && npm init -f`, (initEr
 	console.log('Installing deps -- it might take a few minutes..');
 	const devDeps = getDeps(packageJson.devDependencies);
 	const deps = getDeps(packageJson.dependencies);
-	exec(`cd ${process.argv[2]} && git init && node -v && npm -v && npm i -D ${devDeps} && npm i -S ${deps}`, (npmErr, npmStdout, npmStderr) => {
+
+	exec(`cd ${process.argv[2]} && git init && node -v && npm -v && npm i -D ${devDeps} && npm i -S ${deps} fs-extra`, (npmErr, npmStdout, npmStderr) => {
 		if (npmErr) {
 			console.error(`Some error while installing dependencies
       ${npmErr}`);
@@ -74,7 +77,8 @@ exec(`mkdir ${process.argv[2]} && cd ${process.argv[2]} && npm init -f`, (initEr
 		console.log('Copying additional files..');
 		// copy additional source files
 		fs.copy(path.join(__dirname, '../router'), `${process.argv[2]}/router`);
-		fs.copy(path.join(__dirname, '../src'), `${process.argv[2]}/src`)
+		fs.copy(path.join(__dirname, '../src'), `${process.argv[2]}/src`);
+		fs.copy(path.join(__dirname, '../CreateRouter.js'), `${process.argv[2]}/CreateRouter.js`)
 			.then(() => console.log(`All done!\n\nYour project is now ready\n\nUse the below command to run the app.\n\ncd ${process.argv[2]}\nnpm start`))
 			.catch((err) => console.error(err));
 	});
